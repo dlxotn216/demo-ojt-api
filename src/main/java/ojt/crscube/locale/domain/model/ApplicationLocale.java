@@ -1,4 +1,4 @@
-package ojt.crscube.i18n.domain.model;
+package ojt.crscube.locale.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,8 +16,11 @@ import java.util.Locale;
  */
 @AllArgsConstructor @Getter
 public enum ApplicationLocale {
-    ENGLISH(Locale.ENGLISH),
-    KOREAN(Locale.KOREAN);
+
+    ENGLISH(Locale.ENGLISH, "English", 0),
+    KOREAN(Locale.KOREAN, "한국어", 1);
 
     private Locale locale;
+    private String name;
+    private Integer order;
 }

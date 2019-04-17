@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ojt.crscube.base.domain.model.EntityBase;
+import ojt.crscube.locale.domain.model.ApplicationLocale;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
@@ -23,6 +26,7 @@ import javax.persistence.*;
        uniqueConstraints = {@UniqueConstraint(columnNames = {"I18N_KEY", "LOCALE"})}
        )
 @SequenceGenerator(name = "SEQ_LABEL", sequenceName = "SEQ_LABEL")
+@Audited(withModifiedFlag = true) @EntityListeners(value = {AuditingEntityListener.class})
 public class Label {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "SEQ_LABEL")

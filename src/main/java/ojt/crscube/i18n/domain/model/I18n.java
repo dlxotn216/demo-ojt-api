@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ojt.crscube.base.domain.model.EntityBase;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import java.util.List;
 @NoArgsConstructor @AllArgsConstructor @Builder @Getter
 @Entity @Table(name = "MST_I18N")
 @SequenceGenerator(name = "SEQ_I18N", sequenceName = "SEQ_I18N")
+@Audited(withModifiedFlag = true) @EntityListeners(value = {AuditingEntityListener.class})
 public class I18n {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "SEQ_I18N")
