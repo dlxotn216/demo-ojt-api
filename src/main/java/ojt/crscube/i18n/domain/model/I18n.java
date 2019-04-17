@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ojt.crscube.base.domain.model.EntityBase;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -34,4 +35,7 @@ public class I18n {
     @OneToMany(mappedBy = "i18n",
                cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private List<Label> labels = new ArrayList<>();
+    
+    @Embedded
+    private EntityBase entityBase;
 }

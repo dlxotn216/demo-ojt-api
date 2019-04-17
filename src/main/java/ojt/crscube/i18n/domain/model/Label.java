@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ojt.crscube.base.domain.model.EntityBase;
 
 import javax.persistence.*;
 
@@ -41,4 +42,7 @@ public class Label {
 
     @Column(name = "VALUE", nullable = false)
     private String value;
+
+    @Embedded
+    private EntityBase entityBase;
 }
