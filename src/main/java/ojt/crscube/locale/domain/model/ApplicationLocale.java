@@ -2,8 +2,10 @@ package ojt.crscube.locale.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import ojt.crscube.i18n.domain.exception.UnSupportedLocaleException;
 
 import java.util.Locale;
+import java.util.function.Function;
 
 /**
  * Created by taesu at : 2019-04-12
@@ -16,11 +18,22 @@ import java.util.Locale;
  */
 @AllArgsConstructor @Getter
 public enum ApplicationLocale {
-
-    ENGLISH(Locale.ENGLISH, "English", 0),
-    KOREAN(Locale.KOREAN, "한국어", 1);
+    EN(Locale.ENGLISH, "English", 0),
+    KO(Locale.KOREAN, "한국어", 1);
 
     private Locale locale;
     private String name;
     private Integer order;
+
+    public static ApplicationLocale getDefaultLocale() {
+        return ApplicationLocale.EN;
+    }
+
+    public static final Function<Locale, ApplicationLocale> localeToApplicationLocale = requestLocale -> {
+        try {
+            return ApplicationLocale.valueOf(requestLocale.toString().toUpperCase());
+        } catch (Exception e) {
+            throw new UnSupportedLocaleException(requestLocale.toString());
+        }
+    };
 }

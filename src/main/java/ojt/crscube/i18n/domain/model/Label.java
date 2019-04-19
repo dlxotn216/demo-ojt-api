@@ -1,7 +1,6 @@
 package ojt.crscube.i18n.domain.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ojt.crscube.base.domain.model.EntityBase;
@@ -20,11 +19,11 @@ import javax.persistence.*;
  * @version 1.0
  * @since 1.0
  */
-@NoArgsConstructor @AllArgsConstructor @Builder @Getter
+@NoArgsConstructor @AllArgsConstructor @Getter
 @Entity
-@Table(name = "MST_LABEL", 
-       uniqueConstraints = {@UniqueConstraint(columnNames = {"I18N_KEY", "LOCALE"})}
-       )
+@Table(name = "MST_LABEL",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"I18N_KEY", "LOCALE"})}
+)
 @SequenceGenerator(name = "SEQ_LABEL", sequenceName = "SEQ_LABEL")
 @Audited(withModifiedFlag = true) @EntityListeners(value = {AuditingEntityListener.class})
 public class Label {
@@ -42,11 +41,20 @@ public class Label {
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "LOCALE", nullable = false)
-    private ApplicationLocale locale;
+    private ApplicationLocale applicationLocale;
 
     @Column(name = "VALUE", nullable = false)
     private String value;
 
     @Embedded
-    private EntityBase entityBase;
+    private EntityBase entityBase = new EntityBase();
+
+    public static Label from(I18n i18n, ApplicationLocale locale, String value) {
+        Label label = new Label();
+        label.id = i18n.getId() + "_" + locale.getLocale();
+        label.i18n = i18n;
+        label.applicationLocale = locale;
+        label.value = value;
+        return label;
+    }
 }

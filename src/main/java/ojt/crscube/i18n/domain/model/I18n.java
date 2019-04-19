@@ -35,10 +35,15 @@ public class I18n {
     private String id;
 
     @Builder.Default
-    @OneToMany(mappedBy = "i18n",
-               cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToMany(mappedBy = "i18n", fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private List<Label> labels = new ArrayList<>();
-    
+
+    @Builder.Default
     @Embedded
-    private EntityBase entityBase;
+    private EntityBase entityBase = new EntityBase();
+
+    public void addLabel(Label label) {
+        this.labels.add(label);
+    }
 }

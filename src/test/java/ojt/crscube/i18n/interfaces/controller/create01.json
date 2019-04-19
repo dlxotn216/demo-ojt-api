@@ -1,0 +1,17 @@
+{
+  "i18nId": "USER.USER_NAME",
+  "localeLabelMap": {
+    "en": "Username",
+    "ko": "사용자 이름"
+  }
+};
+
+{
+  "i18nId": "USER.USER_NAME",
+  "localeLabelMap": {
+    "en": "Username",
+    "ko": "사용자 이름"
+    "eu": "사용자 이름",
+    "cn": "사용자 이름"
+  }
+}
