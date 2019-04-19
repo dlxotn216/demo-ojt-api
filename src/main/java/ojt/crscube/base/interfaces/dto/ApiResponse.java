@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static ojt.crscube.base.utils.MessageUtils.getI18nMessage;
+import static ojt.crscube.base.utils.Messages.RESPONSE_SUCCESS;
+
 /**
  * Created by taesu at : 2019-04-12
  *
@@ -22,10 +25,14 @@ public final class ApiResponse {
     private String message;
 
     public static ApiResponse success(Object result) {
-        return success(result, "Request was successfully succeed");
+        return success(result, getI18nMessage(RESPONSE_SUCCESS));
     }
 
     public static ApiResponse success(Object result, String message) {
         return new ApiResponse(result, message);
+    }
+
+    public static ApiResponse fail(String message) {
+        return new ApiResponse("fail", getI18nMessage(message));
     }
 }

@@ -1,7 +1,7 @@
 package ojt.crscube.member.domain.repository;
 
 import ojt.crscube.member.domain.model.Member;
-import ojt.crscube.member.domain.model.Password;
+import ojt.crscube.member.domain.model.MemberPassword;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @version 1.0
  * @since 1.0
  */
-public interface PasswordRepository extends JpaRepository<Password, Long> {
-    Password findByMember(Member member);
+public interface PasswordRepository extends JpaRepository<MemberPassword, Long> {
+    MemberPassword findByMember(Member member);
 }

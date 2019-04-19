@@ -28,7 +28,7 @@ import static ojt.crscube.base.utils.EncryptionUtils.matches;
 @Entity @Table(name = "MST_PASSWORD")
 @SequenceGenerator(name = "SEQ_PASSWORD", sequenceName = "SEQ_PASSWORD")
 @Audited(withModifiedFlag = true) @EntityListeners(value = {AuditingEntityListener.class})
-public class Password {
+public class MemberPassword {
     private static final String FORMAT_INVALID = "PASSWORD.INVALID";
     /**
      * 최소 8자리에 숫자, 문자, 특수문자 각각 1개 이상 포함
@@ -44,20 +44,20 @@ public class Password {
     private String encryptedPassword;
 
     @OneToOne
-    @JoinColumn(name = "PASSWORD_KEY")
+    @JoinColumn(name = "MEMBER_KEY")
     private Member member;
 
     @Embedded
     private EntityBase entityBase = new EntityBase();
 
-    static Password createNewPassword(Member member, String passwordSource) {
+    static MemberPassword createNewPassword(Member member, String passwordSource) {
         passwordValidation(passwordSource);
 
-        Password password = new Password();
-        password.member = member;
-        password.encryptedPassword = encode(passwordSource);
+        MemberPassword memberPassword = new MemberPassword();
+        memberPassword.member = member;
+        memberPassword.encryptedPassword = encode(passwordSource);
 
-        return password;
+        return memberPassword;
     }
 
     private static void passwordValidation(String passwordSource) {

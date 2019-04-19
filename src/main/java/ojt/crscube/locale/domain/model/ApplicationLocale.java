@@ -3,6 +3,7 @@ package ojt.crscube.locale.domain.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import ojt.crscube.i18n.domain.exception.UnSupportedLocaleException;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.util.Locale;
 import java.util.function.Function;
@@ -36,4 +37,12 @@ public enum ApplicationLocale {
             throw new UnSupportedLocaleException(requestLocale.toString());
         }
     };
+
+    public static ApplicationLocale getCurrentLocale() {
+        try {
+            return localeToApplicationLocale.apply(LocaleContextHolder.getLocale());
+        } catch (UnSupportedLocaleException e) {
+            return getDefaultLocale();
+        }
+    }
 }

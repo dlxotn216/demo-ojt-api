@@ -14,6 +14,7 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
+import static ojt.crscube.base.utils.Messages.REQUIRED_PARAMETER;
 import static ojt.crscube.base.utils.VariableUtils.EMPTY_STRING;
 import static org.springframework.util.StringUtils.isEmpty;
 
@@ -30,7 +31,7 @@ public final class I18nDto {
     private I18nDto() {
     }
 
-    @NoArgsConstructor
+    @NoArgsConstructor @AllArgsConstructor
     public static class I18nCreateRequest {
         private String i18nId;
         private Map<Locale, String> localeLabelMap;
@@ -65,7 +66,7 @@ public final class I18nDto {
 
             String defaultLabel = convertedLocaleLabelMap.get(ApplicationLocale.getDefaultLocale());
             if (isEmpty(defaultLabel)) {
-                throw new IllegalArgumentException("");
+                throw new IllegalArgumentException(REQUIRED_PARAMETER);
             }
 
             hasNoLabelValueTargets.forEach(entry -> entry.setValue(defaultLabel));
@@ -77,13 +78,13 @@ public final class I18nDto {
     public static class I18nCreateResponse {
         private String i18nId;
         private Map<Locale, String> localeLabelMap;
-    }
 
-    public static I18nCreateResponse fromI18n(I18n i18n) {
-        I18nCreateResponse res = new I18nCreateResponse();
-        res.setI18nId(i18n.getId());
-        res.setLocaleLabelMap(i18n.getLabels().stream()
-                                  .collect(toMap(o -> o.getApplicationLocale().getLocale(), Label::getValue)));
-        return res;
+        public static I18nCreateResponse fromI18n(I18n i18n) {
+            I18nCreateResponse res = new I18nCreateResponse();
+            res.setI18nId(i18n.getId());
+            res.setLocaleLabelMap(i18n.getLabels().stream()
+                    .collect(toMap(o -> o.getApplicationLocale().getLocale(), Label::getValue)));
+            return res;
+        }
     }
 }

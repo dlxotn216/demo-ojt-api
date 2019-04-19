@@ -2,8 +2,8 @@ package ojt.crscube.member.interfaces.controller;
 
 import lombok.RequiredArgsConstructor;
 import ojt.crscube.base.interfaces.dto.ApiResponse;
-import ojt.crscube.member.application.MemberCreateService;
-import ojt.crscube.member.interfaces.dto.MemberDto.MemberCreateRequest;
+import ojt.crscube.member.application.MemberSignUpService;
+import ojt.crscube.member.interfaces.dto.MemberDto.MemberSignUpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,12 +23,12 @@ import static org.springframework.http.ResponseEntity.status;
  * @since 1.0
  */
 @RestController @RequiredArgsConstructor
-public class MemberCreateController {
+public class MemberSignUpController {
 
-    private final MemberCreateService memberCreateService;
+    private final MemberSignUpService memberSignUpService;
 
-    @PostMapping("/members")
-    public ResponseEntity<ApiResponse> createMember(@RequestBody MemberCreateRequest request) {
-        return status(HttpStatus.CREATED).body(success(this.memberCreateService.createMember(request)));
+    @PostMapping("/members/signup")
+    public ResponseEntity<ApiResponse> createMember(@RequestBody MemberSignUpRequest request) {
+        return status(HttpStatus.CREATED).body(success(this.memberSignUpService.createMember(request)));
     }
 }

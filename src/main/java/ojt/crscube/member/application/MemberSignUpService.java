@@ -2,12 +2,13 @@ package ojt.crscube.member.application;
 
 import lombok.RequiredArgsConstructor;
 import ojt.crscube.member.domain.repository.MemberRepository;
-import ojt.crscube.member.interfaces.dto.MemberDto.MemberCreateRequest;
-import ojt.crscube.member.interfaces.dto.MemberDto.MemberCreateResponse;
+import ojt.crscube.member.interfaces.dto.MemberDto.MemberSignUpRequest;
+import ojt.crscube.member.interfaces.dto.MemberDto.MemberSignUpResponse;
 import org.springframework.stereotype.Component;
 
+import static ojt.crscube.base.utils.Messages.MEMBER_DUPLICATED_ID;
 import static ojt.crscube.member.domain.model.Member.createNewMember;
-import static ojt.crscube.member.interfaces.dto.MemberDto.MemberCreateResponse.from;
+import static ojt.crscube.member.interfaces.dto.MemberDto.MemberSignUpResponse.from;
 
 /**
  * Created by taesu at : 2019-04-19
@@ -19,15 +20,15 @@ import static ojt.crscube.member.interfaces.dto.MemberDto.MemberCreateResponse.f
  * @since 1.0
  */
 @Component @RequiredArgsConstructor
-public class MemberCreateService {
+public class MemberSignUpService {
 
     private final MemberRepository memberRepository;
 
-    public MemberCreateResponse createMember(MemberCreateRequest request) {
+    public MemberSignUpResponse createMember(MemberSignUpRequest request) {
         request.requestValidation();
 
         if (this.memberRepository.findById(request.getId()).isPresent()) {
-            throw new IllegalArgumentException("MEMBER.DUPLICATED_ID");
+            throw new IllegalArgumentException(MEMBER_DUPLICATED_ID);
         }
 
         return from(this.memberRepository.save(

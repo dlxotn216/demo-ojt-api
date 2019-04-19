@@ -4,16 +4,14 @@ import ojt.crscube.i18n.domain.exception.UnSupportedLocaleException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -25,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@WithMockUser
+@ActiveProfiles("test")
 @Transactional
 public class I18nCreateControllerTest {
 
@@ -38,32 +36,34 @@ public class I18nCreateControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"i18nId\" : \"USER.USER_NAME\",  "
-                                 + "\"localeLabelMap\": { \"en\":\"Username\", \"ko\":\"사용자 이름\" } }");
+                        + "\"localeLabelMap\": { \"en\":\"Username\", \"ko\":\"사용자 이름\" } }");
         this.mockMvc.perform(builder)
-                    .andDo(print())
-                    .andExpect(status().isCreated())
-                    .andExpect(jsonPath("$.result.i18nId").value("USER.USER_NAME"))
-                    .andExpect(jsonPath("$.result.localeLabelMap.en").value("Username"))
-                    .andExpect(jsonPath("$.result.localeLabelMap.ko").value("사용자 이름"))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.result.i18nId").value("USER.USER_NAME"))
+                .andExpect(jsonPath("$.result.localeLabelMap.en").value("Username"))
+                .andExpect(jsonPath("$.result.localeLabelMap.ko").value("사용자 이름"))
 
         ;
     }
 
     @Test
     public void 지원하지_않는_Locale_다국어_생성_테스트() throws Exception {
+        //given
         RequestBuilder builder = post("/i18ns")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"i18nId\" : \"USER.USER_NAME\",  "
-                                 + "\"localeLabelMap\": { \"en\":\"Username\", \"ko\":\"사용자 이름\" , "
-                                 + "\"eu\":\"사용자 이름\", \"cn\":\"사용자 이름\"  } }");
+                        + "\"localeLabelMap\": { \"en\":\"Username\", \"ko\":\"사용자 이름\" , "
+                        + "\"eu\":\"사용자 이름\", \"cn\":\"사용자 이름\"  } }");
 
-        assertThatThrownBy(() -> this.mockMvc.perform(builder)
-                                             .andDo(print())
-                                             .andExpect(status().isBadRequest()))
-                .hasCause(new UnSupportedLocaleException("eu"))
+        //when
+        ResultActions perform = this.mockMvc.perform(builder);
+
+        //then
+        perform.andDo(print())
+                .andExpect(status().isBadRequest())
         ;
-
     }
 
     @Test
@@ -72,12 +72,12 @@ public class I18nCreateControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"i18nId\" : \"USER.USER_NAME\",  "
-                                 + "\"localeLabelMap\": { \"en\":\"Username\", \"ko\":\"사용자 이름\" , "
-                                 + "\"ko\":\"사용자 이름\", \"en\":\"사용자 이름\"  } }");
+                        + "\"localeLabelMap\": { \"en\":\"Username\", \"ko\":\"사용자 이름\" , "
+                        + "\"ko\":\"사용자 이름\", \"en\":\"사용자 이름\"  } }");
 
         this.mockMvc.perform(builder)
-                    .andDo(print())
-                    .andExpect(status().isCreated())
+                .andDo(print())
+                .andExpect(status().isCreated())
         ;
     }
 
@@ -87,13 +87,13 @@ public class I18nCreateControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"i18nId\" : \"USER.USER_NAME\",  "
-                                 + "\"localeLabelMap\": { \"en\":\"Username\", \"ko\": null} }");
+                        + "\"localeLabelMap\": { \"en\":\"Username\", \"ko\": null} }");
 
         this.mockMvc.perform(builder)
-                    .andDo(print())
-                    .andExpect(status().isCreated())
-                    .andExpect(jsonPath("$.result.localeLabelMap.ko").exists())
-                    .andExpect(jsonPath("$.result.localeLabelMap.ko").value("Username"))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.result.localeLabelMap.ko").exists())
+                .andExpect(jsonPath("$.result.localeLabelMap.ko").value("Username"))
         ;
     }
 

@@ -2,7 +2,9 @@ package ojt.crscube.i18n.domain.repository;
 
 import ojt.crscube.i18n.domain.model.I18n;
 import ojt.crscube.i18n.domain.model.Label;
+import ojt.crscube.locale.domain.model.ApplicationLocale;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 

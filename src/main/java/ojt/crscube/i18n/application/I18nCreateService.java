@@ -12,7 +12,8 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Map;
 
-import static ojt.crscube.i18n.interfaces.dto.I18nDto.fromI18n;
+import static ojt.crscube.base.utils.Messages.REQUIRED_PARAMETER;
+import static ojt.crscube.i18n.interfaces.dto.I18nDto.I18nCreateResponse.fromI18n;
 import static ojt.crscube.locale.domain.model.ApplicationLocale.valueOf;
 
 /**
@@ -32,7 +33,7 @@ public class I18nCreateService {
     public I18nCreateResponse createI18n(I18nCreateRequest request) {
         Map<ApplicationLocale, String> localeLabelMap = request.getConvertedLocaleLabelMap();
         if (CollectionUtils.isEmpty(localeLabelMap)) {
-            throw new IllegalArgumentException("");
+            throw new IllegalArgumentException(REQUIRED_PARAMETER);
         }
 
         final I18n i18n = I18n.builder().id(request.getI18nId()).build();

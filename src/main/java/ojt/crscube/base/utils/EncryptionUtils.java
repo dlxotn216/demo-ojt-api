@@ -10,13 +10,14 @@ import static org.springframework.security.crypto.factory.PasswordEncoderFactori
  * @since 1.0
  */
 public final class EncryptionUtils {
-    private EncryptionUtils(){}
-    
-    public static String encode(String source){
+    private EncryptionUtils() {
+    }
+
+    public static String encode(String source) {
         return createDelegatingPasswordEncoder().encode(source);
     }
-    
-    public static boolean matches(String source, String encoded){
+
+    public static boolean matches(String source, String encoded) {
         return createDelegatingPasswordEncoder().matches(source, encoded);
     }
 }

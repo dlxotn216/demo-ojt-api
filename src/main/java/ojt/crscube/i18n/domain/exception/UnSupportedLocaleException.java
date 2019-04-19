@@ -3,6 +3,8 @@ package ojt.crscube.i18n.domain.exception;
 import lombok.Getter;
 import org.springframework.core.NestedRuntimeException;
 
+import static ojt.crscube.base.utils.Messages.EXCEPTION_UNSUPPORTED_LOCALE;
+
 /**
  * Created by taesu at : 2019-04-17
  *
@@ -14,17 +16,16 @@ import org.springframework.core.NestedRuntimeException;
  */
 @Getter
 public class UnSupportedLocaleException extends NestedRuntimeException {
-    private static final String MESSAGE = "EXCEPTION.UNSUPPORTED_LOCALE";
     private final String locale;
 
     public UnSupportedLocaleException(String locale) {
-        super(MESSAGE);
+        super(EXCEPTION_UNSUPPORTED_LOCALE);
         this.locale = locale;
     }
 
     public UnSupportedLocaleException(String locale,
                                       Throwable cause) {
-        super(MESSAGE, cause);
+        super(EXCEPTION_UNSUPPORTED_LOCALE, cause);
         this.locale = locale;
     }
 }

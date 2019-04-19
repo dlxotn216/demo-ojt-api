@@ -7,6 +7,9 @@ import ojt.crscube.member.domain.model.Member;
 
 import java.util.Objects;
 
+import static ojt.crscube.base.utils.Messages.PASSWORD_NOT_MATCHED;
+import static ojt.crscube.base.utils.Messages.REQUIRED_PARAMETER;
+
 /**
  * Created by taesu at : 2019-04-19
  *
@@ -19,32 +22,32 @@ public final class MemberDto {
     }
 
     @Data @NoArgsConstructor @AllArgsConstructor
-    public static class MemberCreateRequest {
+    public static class MemberSignUpRequest {
         private String id;
         private String name;
         private String password;
         private String passwordConfirm;
 
         public void requestValidation() {
-            Objects.requireNonNull(id, "REQUIRED_PARAMETER");
-            Objects.requireNonNull(name, "REQUIRED_PARAMETER");
-            Objects.requireNonNull(password, "REQUIRED_PARAMETER");
-            Objects.requireNonNull(passwordConfirm, "REQUIRED_PARAMETER");
+            Objects.requireNonNull(id, REQUIRED_PARAMETER);
+            Objects.requireNonNull(name, REQUIRED_PARAMETER);
+            Objects.requireNonNull(password, REQUIRED_PARAMETER);
+            Objects.requireNonNull(passwordConfirm, REQUIRED_PARAMETER);
 
             if (!Objects.equals(password, passwordConfirm)) {
-                throw new IllegalArgumentException("PASSWORD.NOT_MATCHED");
+                throw new IllegalArgumentException(PASSWORD_NOT_MATCHED);
             }
         }
     }
 
     @Data @NoArgsConstructor @AllArgsConstructor
-    public static class MemberCreateResponse {
+    public static class MemberSignUpResponse {
         private Long key;
         private String id;
         private String name;
 
-        public static MemberCreateResponse from(Member member) {
-            return new MemberCreateResponse(member.getKey(), member.getId(), member.getName());
+        public static MemberSignUpResponse from(Member member) {
+            return new MemberSignUpResponse(member.getKey(), member.getId(), member.getName());
         }
     }
 
@@ -53,8 +56,8 @@ public final class MemberDto {
         private String id;
         private String password;
         public void requestValidation() {
-            Objects.requireNonNull(id, "REQUIRED_PARAMETER");
-            Objects.requireNonNull(password, "REQUIRED_PARAMETER");
+            Objects.requireNonNull(id, REQUIRED_PARAMETER);
+            Objects.requireNonNull(password, REQUIRED_PARAMETER);
         }
     }
 
@@ -63,5 +66,10 @@ public final class MemberDto {
         private String id;
         private String name;
         private String accessToken;
+
+        public static MemberLoginResponse from(Member member, String accessToken){
+            return new MemberLoginResponse(member.getId(), member.getName(), accessToken);
+        }
     }
+
 }
