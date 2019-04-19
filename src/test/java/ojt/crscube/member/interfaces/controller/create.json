@@ -1,0 +1,20 @@
+{
+  "Valid User": {
+    "id": "taesu",
+    "name": "Lee Tae Su",
+    "password": "password1!",
+    "passwordConfirm": "password1!"
+  },
+  "invalid password": {
+    "id": "taesu",
+    "name": "Lee Tae Su",
+    "password": "password",
+    "passwordConfirm": "password"
+  },
+  "not same password": {
+    "id": "taesu",
+    "name": "Lee Tae Su",
+    "password": "password1111",
+    "passwordConfirm": "password2222"
+  }
+}
