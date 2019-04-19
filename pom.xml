@@ -36,6 +36,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- Undertow -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
@@ -92,8 +93,6 @@
             <artifactId>java-jwt</artifactId>
             <version>${com.auth.java.jwt.version}</version>
         </dependency>
-
-        <!-- java jwe+jws token -->
         <dependency>
             <groupId>com.nimbusds</groupId>
             <artifactId>nimbus-jose-jwt</artifactId>
