@@ -1,0 +1,103 @@
+---
+app:
+  i18ns:
+    - i18nId: REQUIRED_PARAMETER
+      values:
+        - locale: ko
+          value: 필수 파라미터가 누락되었습니다.
+        - locale: en
+          value: Missing required parameters.
+    - i18nId: PASSWORD_NOT_MATCHED
+      values:
+        - locale: ko
+          value: 비밀번호가일치하지 않습니다.
+        - locale: en
+          value: Password do not matched.
+    - i18nId: LOGIN_INVALID_MEMBER
+      values:
+        - locale: ko
+          value: 유효하지 않은 사용자이거나 비밀번호입니다.
+        - locale: en
+          value: Invalid Member or Member password.
+    - i18nId: ACCESS_TOKEN_INVALID
+      values:
+        - locale: ko
+          value: 유효하지 않은 Access token입니다.
+        - locale: en
+          value: Invalid Access token.
+    - i18nId: ACCESS_TOKEN_EXPIRED
+      values:
+        - locale: ko
+          value: Access token이 만료되었습니다.
+        - locale: en
+          value: Access token has been expired.
+    - i18nId: MEMBER_DUPLICATED_ID
+      values:
+        - locale: ko
+          value: 중복된 사용자 아이디입니다.
+        - locale: en
+          value: Duplicated Member ID.
+    - i18nId: EXCEPTION_UNSUPPORTED_LOCALE
+      values:
+        - locale: ko
+          value: 지원하지 않는 Locale 입니다.
+        - locale: en
+          value: Locale not supported.
+    - i18nId: MESSAGE_NOT_FOUND
+      values:
+        - locale: ko
+          value: 메시지가 존재하지 않습니다.
+        - locale: en
+          value: Message not found,
+    - i18nId: RESPONSE_SUCCESS
+      values:
+        - locale: ko
+          value: 요청이 정상적으로 처리되었습니다.
+        - locale: en
+          value: Request was successfully proceed.
+
+spring:
+  profiles:
+    active: service
+  datasource:
+    url: jdbc:h2:~/test
+    data-username: sa
+    data-password:
+    dbcp2:
+      driver-class-name: org.h2.driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      org:
+        hibernate:
+          envers:
+            audit_table_suffix: _HISTORY
+            modified_flag_suffix: _CHANGED
+          jdbc:
+            time_zone: UTC
+  jackson:
+    time-zone: UTC
+
+server:
+  address:
+  port: 8080
+  ssl:
+    key-store: httpskey.jks
+    key-password: qwer1234
+    enabled: true
+  http2:
+    enabled: true
+debug: true
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+
+
+
