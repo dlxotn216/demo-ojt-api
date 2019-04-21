@@ -15,4 +15,6 @@ public final class Messages {
     public static final String EXCEPTION_UNSUPPORTED_LOCALE = "EXCEPTION_UNSUPPORTED_LOCALE";
     public static final String MESSAGE_NOT_FOUND = "MESSAGE_NOT_FOUND";
     public static final String RESPONSE_SUCCESS = "RESPONSE_SUCCESS";
+    public static final String ILLEGAL_STATUS = "ILLEGAL_STATUS";
+    public static final String PASSWORD_INVALID = "PASSWORD_INVALID";
 }

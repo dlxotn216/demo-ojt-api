@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import static ojt.crscube.base.utils.EncryptionUtils.encode;
 import static ojt.crscube.base.utils.EncryptionUtils.matches;
+import static ojt.crscube.base.utils.Messages.PASSWORD_INVALID;
 
 /**
  * Created by taesu at : 2019-04-19
@@ -29,7 +30,6 @@ import static ojt.crscube.base.utils.EncryptionUtils.matches;
 @SequenceGenerator(name = "SEQ_PASSWORD", sequenceName = "SEQ_PASSWORD")
 @Audited(withModifiedFlag = true) @EntityListeners(value = {AuditingEntityListener.class})
 public class MemberPassword {
-    private static final String FORMAT_INVALID = "PASSWORD.INVALID";
     /**
      * 최소 8자리에 숫자, 문자, 특수문자 각각 1개 이상 포함
      */
@@ -62,12 +62,12 @@ public class MemberPassword {
 
     private static void passwordValidation(String passwordSource) {
         if (StringUtils.isEmpty(passwordSource)) {
-            throw new IllegalArgumentException(FORMAT_INVALID);
+            throw new IllegalArgumentException(PASSWORD_INVALID);
         }
-        
+
         Matcher matcher = Pattern.compile(FORMAT_REGX).matcher(passwordSource);
         if (!matcher.matches()) {
-            throw new IllegalArgumentException(FORMAT_INVALID);
+            throw new IllegalArgumentException(PASSWORD_INVALID);
         }
     }
 

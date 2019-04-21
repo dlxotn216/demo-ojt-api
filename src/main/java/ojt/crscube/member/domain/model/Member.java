@@ -55,7 +55,7 @@ public class Member implements TokenSource{
         this.setMemberPassword(newPassword);
     }
 
-    private void setMemberPassword(String memberPassword) {
+    public void setMemberPassword(String memberPassword) {
         this.memberPassword = createNewPassword(this, memberPassword);
     }
 

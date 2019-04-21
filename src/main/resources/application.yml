@@ -55,6 +55,18 @@ labels:
           value: 요청이 정상적으로 처리되었습니다.
         - locale: en
           value: Request was successfully proceed.
+    - i18nId: ILLEGAL_STATUS
+      values:
+        - locale: ko
+          value: Entity의 상태가 이상합니다.
+        - locale: en
+          value: Illegal status of entity.
+    - i18nId: PASSWORD_INVALID
+      values:
+        - locale: ko
+          value: 비밀번호는 최소 8자리 이상이며 숫자, 문자, 특수문자를 최소 1개 이상 포함해야합니다.
+        - locale: en
+          value: The password must be at least 8 digits long and contain at least one number, letters, and special characters.
     - i18nId: LOGIN_TITLE
       values:
         - locale: ko

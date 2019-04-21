@@ -12,4 +12,10 @@ public final class VariableUtils {
     }
     
     public static final String EMPTY_STRING = "";
+
+    public static void requireNonNull(Object object, String validationMessage){
+        if(object == null){
+            throw new IllegalArgumentException(validationMessage);
+        }
+    }
 }

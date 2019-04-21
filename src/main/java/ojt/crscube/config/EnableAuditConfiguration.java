@@ -1,6 +1,8 @@
 package ojt.crscube.config;
 
+import lombok.RequiredArgsConstructor;
 import ojt.crscube.member.domain.model.Member;
+import ojt.crscube.member.domain.repository.MemberRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -23,28 +25,35 @@ import static ojt.crscube.auth.AuthenticationContextHolder.getAuthentication;
 @Configuration
 public class EnableAuditConfiguration {
 
+    @RequiredArgsConstructor
     @Configuration
     @EnableJpaAuditing(auditorAwareRef = "auditorAware")
     @Profile("test")
     static class TestAuditorAwareConfig {
+        private final MemberRepository memberRepository;
+
         @Bean
-        public AuditorAware<Long> auditorAware() {
-            return () -> Optional.of(-1L);
+        public AuditorAware<Member> auditorAware() {
+            return () ->
+                    this.memberRepository.findById(1L);
         }
     }
 
+    @RequiredArgsConstructor
     @Configuration
     @EnableJpaAuditing(auditorAwareRef = "auditorAware")
     @Profile("!test")
     static class ServiceAuditorAwareConfig {
+        private final MemberRepository memberRepository;
+
         @Bean
-        public AuditorAware<Long> auditorAware() {
+        public AuditorAware<Member> auditorAware() {
             return () -> {
                 Member authentication = getAuthentication();
                 if (authentication == null) {
-                    return Optional.of(-1L);
+                    return this.memberRepository.findById(1L);
                 }
-                return Optional.of(authentication.getKey());
+                return Optional.of(authentication);
             };
         }
     }
