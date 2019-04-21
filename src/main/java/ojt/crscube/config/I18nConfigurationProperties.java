@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import ojt.crscube.locale.domain.model.ApplicationLocale;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -18,7 +17,7 @@ import java.util.Locale;
  */
 @Component
 @Getter @Setter
-@ConfigurationProperties(prefix = "app")
+@ConfigurationProperties(prefix = "labels")
 public class I18nConfigurationProperties {
     private List<I18nConfig> i18ns = new ArrayList<>();
 
@@ -32,7 +31,8 @@ public class I18nConfigurationProperties {
     public static class I18nLabelConfig implements Serializable {
         private String locale;
         private String value;
-        public Locale getLocale(){
+
+        public Locale getLocale() {
             return ApplicationLocale.valueOf(this.locale.toUpperCase()).getLocale();
         }
     }
