@@ -1,5 +1,6 @@
 package ojt.crscube.board.interfaces.controller;
 
+import ojt.crscube.base.domain.exception.EntityNotFoundException;
 import ojt.crscube.board.domain.model.Board;
 import ojt.crscube.board.domain.repository.BoardRepository;
 import org.junit.Test;
@@ -59,8 +60,8 @@ public class BoardSearchControllerTest {
 
         //then
         perform.andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.result.content").isArray())
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.result.content").isArray())
         ;
     }
 
@@ -86,9 +87,9 @@ public class BoardSearchControllerTest {
 
         //then
         perform.andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.result.content").isArray())
-                .andExpect(jsonPath("$.result.totalElements").value(1))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.result.content").isArray())
+               .andExpect(jsonPath("$.result.totalElements").value(1))
         ;
         /*
          select board0_.board_key as board_ke1_0_0_, member1_.member_key as member_k1_6_1_, board0_.content as content2_0_0_,
@@ -106,5 +107,50 @@ public class BoardSearchControllerTest {
          binding parameter [3] as [VARCHAR] - [%3%]
          binding parameter [4] as [TIMESTAMP] - [2019-04-21T00:00]
          */
+    }
+
+    @Test
+    public void Board_단건_조회_테스트() throws Exception {
+        //given
+        this.boardRepository.saveAll(Arrays.asList(
+                Board.builder().subject("test01").content("test01 content").build(),
+                Board.builder().subject("test02").content("test02 content").build(),
+                Board.builder().subject("test03").content("test03 content").build(),
+                Board.builder().subject("test04").content("test04 content").build(),
+                Board.builder().subject("test05").content("test05 content").build(),
+                Board.builder().subject("test06").content("test06 content").build()
+        ));
+
+        MockHttpServletRequestBuilder requestBuilder = get("/boards/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+        //when
+        ResultActions perform = this.mockMvc.perform(requestBuilder);
+
+        //then
+        Board board = this.boardRepository.findById(1L).orElseThrow(EntityNotFoundException::new);
+
+        perform.andDo(print())
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.result.subject").value(board.getSubject()))
+               .andExpect(jsonPath("$.result.content").value(board.getContent()))
+        ;
+    }
+
+    @Test
+    public void Board_단건_조회_실패_테스트() throws Exception {
+        //given
+        MockHttpServletRequestBuilder requestBuilder = get("/boards/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+        //when
+        ResultActions perform = this.mockMvc.perform(requestBuilder);
+
+        //then
+        perform.andDo(print())
+               .andExpect(status().isNotFound())
+        ;
     }
 }

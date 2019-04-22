@@ -32,6 +32,6 @@ public class BoardSearchController {
 
     @GetMapping("/boards/{key}")
     public ResponseEntity<ApiResponse> search(@PathVariable("key") Long key) {
-        return ok(success(this.boardSearchService.searchOrThrow(key)));
+        return ok(success(this.boardSearchService.searchBoard(key)));
     }
 }
