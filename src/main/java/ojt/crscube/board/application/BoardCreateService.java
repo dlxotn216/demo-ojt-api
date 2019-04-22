@@ -20,7 +20,7 @@ public class BoardCreateService {
         request.requestValidation();
 
         final Board savedBoard = this.boardRepository.save(Board.builder().subject(request.getSubject())
-                .content(request.getContent()).build());
+                                                                .content(request.getContent()).build());
 
         return from(savedBoard);
     }
