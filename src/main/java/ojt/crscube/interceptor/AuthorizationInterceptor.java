@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Collections.singletonList;
 import static ojt.crscube.auth.AuthenticationContextHolder.remove;
 import static ojt.crscube.auth.AuthenticationContextHolder.setAuthentication;
 import static ojt.crscube.base.utils.Messages.ACCESS_TOKEN_INVALID;
@@ -39,10 +40,11 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
     static {
         Map<String, List<String>> map = new HashMap<>();
-        map.put("/locales", Collections.singletonList("GET"));
-        map.put("/i18ns/entry", Collections.singletonList("GET"));
-        map.put("/members/login", Collections.singletonList("POST"));
-        map.put("/members/signup", Collections.singletonList("POST"));
+        map.put("/locales", singletonList("GET"));
+        map.put("/i18ns/entry", singletonList("GET"));
+        map.put("/members/duplicated-check", singletonList("GET"));
+        map.put("/members/login", singletonList("POST"));
+        map.put("/members/signup", singletonList("POST"));
 
         skipURIs = Collections.unmodifiableMap(map);
     }

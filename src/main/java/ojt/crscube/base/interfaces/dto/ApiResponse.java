@@ -25,14 +25,18 @@ public final class ApiResponse {
     private String message;
 
     public static ApiResponse success() {
-        return success("success", getI18nMessage(RESPONSE_SUCCESS));
+        return fromSuccess("success", getI18nMessage(RESPONSE_SUCCESS));
     }
 
     public static ApiResponse success(Object result) {
-        return success(result, getI18nMessage(RESPONSE_SUCCESS));
+        return fromSuccess(result, getI18nMessage(RESPONSE_SUCCESS));
     }
 
     public static ApiResponse success(Object result, String message) {
+        return fromSuccess(result, getI18nMessage(message));
+    }
+
+    private static ApiResponse fromSuccess(Object result, String message) {
         return new ApiResponse(result, message);
     }
 
