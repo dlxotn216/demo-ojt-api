@@ -32,7 +32,7 @@ public class BoardCustomRepositoryImpl extends QuerydslRepositorySupport impleme
         QBoard qBoard = new QBoard(boardAlias);
 
         JPQLQuery<Board> query
-                = from(qBoard).innerJoin(qBoard.entityBase.updatedBy, qMember)
+                = from(qBoard).innerJoin(qBoard.writer, qMember)
                 .where(buildPredicate(searchCriteria, memberAlias, boardAlias)).fetchJoin();
 
         query.offset(pageable.getOffset());

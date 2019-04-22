@@ -50,7 +50,7 @@ public final class I18nDto {
 
         public Map<ApplicationLocale, String> getConvertedLocaleLabelMap() {
             Map<ApplicationLocale, String> convertedLocaleLabelMap
-                    = localeLabelMap.keySet().stream().map(ApplicationLocale.localeToApplicationLocale)
+                    = localeLabelMap.keySet().stream().map(ApplicationLocale.CONVERTER)
                                     .collect(toMap(o -> o, o -> this.localeLabelMap.computeIfAbsent(o.getLocale(),
                                                                                                     locale -> EMPTY_STRING)));
 

@@ -7,10 +7,12 @@ import lombok.NoArgsConstructor;
 import ojt.crscube.base.domain.model.EntityBase;
 import ojt.crscube.member.domain.model.Member;
 import org.hibernate.envers.Audited;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * Created by taesu on 2019-04-21.
@@ -38,6 +40,11 @@ public class Board {
     @Lob
     private String content;
 
+    @CreatedBy
+    @ManyToOne
+    @JoinColumn(name = "WRITER", updatable = false)
+    private Member writer;
+
     @Builder.Default
     @Embedded
     private EntityBase entityBase = new EntityBase();
@@ -46,8 +53,21 @@ public class Board {
         return this.entityBase.getUpdateDateTime();
     }
 
-    public Member getUpdatedBy() {
-        return this.entityBase.getUpdatedBy();
+    public Boolean isWriter(Long memberKey) {
+        return Objects.equals(this.getWriter().getKey(), memberKey);
+    }
+
+    public Board update(String subject, String content, String reason) {
+        this.subject = subject;
+        this.content = content;
+        this.entityBase.setReason(reason);
+        return this;
+    }
+
+    public Board delete(String reason) {
+        this.entityBase.setDeleted(true);
+        this.entityBase.setReason(reason);
+        return this;
     }
 
 }

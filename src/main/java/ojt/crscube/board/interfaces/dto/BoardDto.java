@@ -57,7 +57,7 @@ public final class BoardDto {
                     board.getKey(),
                     board.getSubject(),
                     board.getUpdatedDateTime().toLocalDate(),
-                    board.getUpdatedBy().getId());
+                    board.getWriter().getId());
         }
     }
 
@@ -75,7 +75,27 @@ public final class BoardDto {
                     board.getSubject(),
                     board.getContent(),
                     board.getUpdatedDateTime().toLocalDate(),
-                    board.getUpdatedBy().getId());
+                    board.getWriter().getId());
+        }
+    }
+
+    @Data @NoArgsConstructor @AllArgsConstructor
+    public static class BoardUpdateRequest {
+        private String subject;
+        private String content;
+        private String reason;
+
+        public void setSubject(String subject) {
+            this.subject = trimWhitespace(subject);
+        }
+
+        public void setContent(String content) {
+            this.content = trimWhitespace(content);
+        }
+
+        public void requestValidation() {
+            requireNonNull(subject, REQUIRED_PARAMETER);
+            requireNonNull(content, REQUIRED_PARAMETER);
         }
     }
 }

@@ -7,6 +7,18 @@ labels:
           value: 필수 파라미터가 누락되었습니다.
         - locale: en
           value: Missing required parameters.
+    - i18nId: ENTITY_NOT_FOUND
+      values:
+        - locale: ko
+          value: 존재하지 않는 엔티티입니다.
+        - locale: en
+          value: Entity does not exist.
+    - i18nId: ILLEGAL_ACCESS
+      values:
+        - locale: ko
+          value: 잘못된 접근입니다.
+        - locale: en
+          value: Illegal access.
     - i18nId: PASSWORD_NOT_MATCHED
       values:
         - locale: ko

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import ojt.crscube.member.domain.model.Member;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -42,4 +43,13 @@ public class EntityBase {
     @Column(name = "REASON")
     private String reason = "-";
 
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public void setReason(String reason) {
+        this.reason = StringUtils.isEmpty(reason)
+                ? "-"
+                : reason;
+    }
 }
