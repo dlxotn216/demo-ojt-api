@@ -42,13 +42,13 @@ public final class MemberDto {
     }
 
     @Data @NoArgsConstructor @AllArgsConstructor
-    public static class MemberSignUpResponse {
+    public static class MemberSearchResponse {
         private Long key;
         private String id;
         private String name;
 
-        public static MemberSignUpResponse from(Member member) {
-            return new MemberSignUpResponse(member.getKey(), member.getId(), member.getName());
+        public static MemberSearchResponse from(Member member) {
+            return new MemberSearchResponse(member.getKey(), member.getId(), member.getName());
         }
     }
 
@@ -73,5 +73,4 @@ public final class MemberDto {
             return new MemberLoginResponse(member.getId(), member.getName(), accessToken);
         }
     }
-
 }

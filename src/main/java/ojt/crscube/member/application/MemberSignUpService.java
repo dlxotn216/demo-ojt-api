@@ -3,12 +3,12 @@ package ojt.crscube.member.application;
 import lombok.RequiredArgsConstructor;
 import ojt.crscube.member.domain.repository.MemberRepository;
 import ojt.crscube.member.interfaces.dto.MemberDto.MemberSignUpRequest;
-import ojt.crscube.member.interfaces.dto.MemberDto.MemberSignUpResponse;
+import ojt.crscube.member.interfaces.dto.MemberDto.MemberSearchResponse;
 import org.springframework.stereotype.Component;
 
 import static ojt.crscube.base.utils.Messages.MEMBER_DUPLICATED_ID;
 import static ojt.crscube.member.domain.model.Member.createNewMember;
-import static ojt.crscube.member.interfaces.dto.MemberDto.MemberSignUpResponse.from;
+import static ojt.crscube.member.interfaces.dto.MemberDto.MemberSearchResponse.from;
 
 /**
  * Created by taesu at : 2019-04-19
@@ -24,7 +24,7 @@ public class MemberSignUpService {
 
     private final MemberRepository memberRepository;
 
-    public MemberSignUpResponse createMember(MemberSignUpRequest request) {
+    public MemberSearchResponse createMember(MemberSignUpRequest request) {
         request.requestValidation();
 
         if (this.memberRepository.findById(request.getId()).isPresent()) {

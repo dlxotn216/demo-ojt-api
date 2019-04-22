@@ -49,6 +49,12 @@ labels:
           value: 중복된 사용자 아이디입니다.
         - locale: en
           value: Duplicated Member ID.
+    - i18nId: MEMBER_AVAILABLE_ID
+      values:
+        - locale: ko
+          value: 사용 가능한 아이디입니다.
+        - locale: en
+          value: Avaliable Member ID.
     - i18nId: EXCEPTION_UNSUPPORTED_LOCALE
       values:
         - locale: ko

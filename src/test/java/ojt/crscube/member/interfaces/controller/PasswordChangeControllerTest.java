@@ -1,5 +1,6 @@
 package ojt.crscube.member.interfaces.controller;
 
+import ojt.crscube.base.domain.exception.EntityNotFoundException;
 import ojt.crscube.member.application.MemberLoginService;
 import ojt.crscube.member.application.MemberSignUpService;
 import ojt.crscube.member.domain.repository.MemberRepository;
@@ -18,9 +19,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
-import static ojt.crscube.base.utils.Messages.ENTITY_NOT_FOUND;
+import static ojt.crscube.member.interfaces.dto.MemberDto.MemberSearchResponse;
 import static ojt.crscube.member.interfaces.dto.MemberDto.MemberSignUpRequest;
-import static ojt.crscube.member.interfaces.dto.MemberDto.MemberSignUpResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -51,7 +51,7 @@ public class PasswordChangeControllerTest {
     @Test
     public void 비밀번호_변경_테스트() throws Exception {
         //given
-        MemberSignUpResponse testuser = this.memberSignUpService.createMember(
+        MemberSearchResponse testuser = this.memberSignUpService.createMember(
                 new MemberSignUpRequest("testuser", "test user", "test01!@#", "test01!@#"));
 
         MockHttpServletRequestBuilder put = put("/members/" + testuser.getKey() + "/passwords")
@@ -78,9 +78,9 @@ public class PasswordChangeControllerTest {
         assertThat(response.getAccessToken()).isNotNull();
 
         assertThat(this.memberRepository.findById(testuser.getKey())
-                                        .orElseThrow(() -> new IllegalArgumentException(ENTITY_NOT_FOUND))
+                                        .orElseThrow(EntityNotFoundException::new)
                                         .getMemberPassword()
-                                        .orElseThrow(() -> new IllegalArgumentException(ENTITY_NOT_FOUND))
+                                        .orElseThrow(EntityNotFoundException::new)
                                         .getEntityBase().getReason()).isEqualTo("for test");
 
     }

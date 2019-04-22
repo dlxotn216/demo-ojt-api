@@ -1,13 +1,12 @@
 package ojt.crscube.member.application;
 
 import lombok.RequiredArgsConstructor;
+import ojt.crscube.base.domain.exception.EntityNotFoundException;
 import ojt.crscube.member.domain.model.Member;
 import ojt.crscube.member.domain.repository.MemberRepository;
 import ojt.crscube.member.interfaces.dto.PasswordDto.PasswordChangeRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import static ojt.crscube.base.utils.Messages.ENTITY_NOT_FOUND;
 
 /**
  * Created by taesu at : 2019-04-22
@@ -26,7 +25,7 @@ public class PasswordChangeService {
     public void changePassword(Long memberKey, PasswordChangeRequest request) {
         request.requestValidation();
         Member member = this.memberRepository.findById(memberKey)
-                                             .orElseThrow(() -> new IllegalArgumentException(ENTITY_NOT_FOUND));
+                                             .orElseThrow(EntityNotFoundException::new);
 
         member.changePassword(request.getOriginPassword(), request.getNewPassword(), request.getReason());
         this.memberRepository.save(member);

@@ -19,4 +19,5 @@ public final class Messages {
     public static final String RESPONSE_SUCCESS = "RESPONSE_SUCCESS";
     public static final String ILLEGAL_STATUS = "ILLEGAL_STATUS";
     public static final String PASSWORD_INVALID = "PASSWORD_INVALID";
+    public static final String MEMBER_AVAILABLE_ID = "MEMBER_AVAILABLE_ID";
 }
