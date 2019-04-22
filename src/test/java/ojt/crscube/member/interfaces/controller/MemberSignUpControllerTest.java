@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
+import static ojt.crscube.base.utils.Messages.LOGIN_INVALID_MEMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -37,9 +38,6 @@ public class MemberSignUpControllerTest {
 
     @Autowired
     private MemberRepository memberRepository;
-
-    @Autowired
-    private PasswordRepository passwordRepository;
 
     @Test
     public void 사용자_생성_테스트() throws Exception {
@@ -66,7 +64,8 @@ public class MemberSignUpControllerTest {
         ;
 
         Member taesu = this.memberRepository.findById("taesu").orElseThrow(IllegalStateException::new);
-        assertThat(this.passwordRepository.findByMember(taesu).getEncryptedPassword()).isNotNull();
+        assertThat(taesu.getMemberPassword().orElseThrow(() -> new IllegalStateException(LOGIN_INVALID_MEMBER))
+                        .getEncryptedPassword()).isNotNull();
     }
 
     @Test

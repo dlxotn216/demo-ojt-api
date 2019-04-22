@@ -18,6 +18,8 @@ public class SearchOption {
             key = "entityBase.updatedBy";
         } else if (key.equalsIgnoreCase("updateDateTime")) {
             key = "entityBase.updateDateTime";
+        } else if (key.equalsIgnoreCase("deleted")) {
+            key = "entityBase.deleted";
         }
         this.key = key;
         this.operation = operation;

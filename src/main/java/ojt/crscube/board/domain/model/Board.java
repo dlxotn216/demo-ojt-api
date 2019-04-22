@@ -41,7 +41,7 @@ public class Board {
     private String content;
 
     @CreatedBy
-    @ManyToOne
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "WRITER", updatable = false)
     private Member writer;
 

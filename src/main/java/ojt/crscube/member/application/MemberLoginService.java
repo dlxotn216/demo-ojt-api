@@ -24,7 +24,6 @@ import static ojt.crscube.member.interfaces.dto.MemberDto.MemberLoginResponse.fr
 @Component @RequiredArgsConstructor
 public class MemberLoginService {
     private final MemberRepository memberRepository;
-    private final PasswordRepository passwordRepository;
     private final TokenService<Member> tokenService;
 
     public MemberLoginResponse login(MemberLoginRequest request) {
@@ -33,7 +32,7 @@ public class MemberLoginService {
         Member member = this.memberRepository.findById(request.getId())
                 .orElseThrow(() -> new IllegalArgumentException(LOGIN_INVALID_MEMBER));
 
-        if (!this.passwordRepository.findByMember(member).isMatchedPassword(request.getPassword())) {
+        if (!member.isMatchedPassword(request.getPassword())) {
             throw new IllegalArgumentException(LOGIN_INVALID_MEMBER);
         }
 

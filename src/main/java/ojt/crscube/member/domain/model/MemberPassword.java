@@ -26,7 +26,8 @@ import static ojt.crscube.base.utils.Messages.PASSWORD_INVALID;
  * @since 1.0
  */
 @NoArgsConstructor @AllArgsConstructor @Getter
-@Entity @Table(name = "MST_PASSWORD")
+@Entity @Table(name = "MST_PASSWORD",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"PASSWORD_KEY", "MEMBER_KEY"})})
 @SequenceGenerator(name = "SEQ_PASSWORD", sequenceName = "SEQ_PASSWORD")
 @Audited(withModifiedFlag = true) @EntityListeners(value = {AuditingEntityListener.class})
 public class MemberPassword {
@@ -43,7 +44,7 @@ public class MemberPassword {
     @Column(name = "PASSWORD", nullable = false)
     private String encryptedPassword;
 
-    @OneToOne
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_KEY")
     private Member member;
 
@@ -71,7 +72,12 @@ public class MemberPassword {
         }
     }
 
-    public boolean isMatchedPassword(String password) {
+    public void updatePassword(String passwordSource) {
+        passwordValidation(passwordSource);
+        this.encryptedPassword = encode(passwordSource);
+    }
+
+    boolean isMatchedPassword(String password) {
         return matches(password, this.encryptedPassword);
     }
 }

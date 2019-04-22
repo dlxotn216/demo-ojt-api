@@ -65,6 +65,11 @@ public enum SearchOperation {
         }
     }
 
+    public static BooleanExpression getBooleanExpression(BooleanPath path,
+                                                         Boolean value) {
+        return path.eq(value);
+    }
+
     public static BooleanExpression getBooleanExpression(DatePath<LocalDate> path,
                                                          SearchOperation operation,
                                                          LocalDate value) {

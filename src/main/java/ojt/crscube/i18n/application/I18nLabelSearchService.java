@@ -31,8 +31,7 @@ public class I18nLabelSearchService {
 
     @Transactional(readOnly = true)
     public String searchOrDefault(String i18nId, ApplicationLocale locale) {
-        final I18n i18n = this.i18nRepository.findById(i18nId).orElseThrow(IllegalArgumentException::new);
-        List<Label> labels = this.labelRepository.findAllByI18n(i18n);
+        List<Label> labels = this.labelRepository.findAllByI18nId(i18nId);
         return labels.stream()
                 .filter(label -> label.getApplicationLocale() == locale)
                 .findAny()

@@ -36,6 +36,7 @@ public final class BoardPredicatesBuilder {
     static {
         PROPERTY_OWNER_MAP.put("updatedBy", Member.class);
         PROPERTY_TYPE_MAP.put("entityBase.updateDateTime", LocalDateTime.class);
+        PROPERTY_TYPE_MAP.put("entityBase.deleted", Boolean.class);
     }
 
     public static BooleanExpression buildPredicate(SearchCriteria searchCriteria,
@@ -46,17 +47,18 @@ public final class BoardPredicatesBuilder {
         }
 
         return searchCriteria.getOptions().stream()
-                .map(criteria -> withExpression(criteria, memberAlias, boardAlias))
-                .filter(Objects::nonNull)
-                .reduce(searchCriteria.isAndCondition()
-                                ? asBoolean(true).isTrue()
-                                : asBoolean(false).isTrue(),
-                        searchCriteria.isAndCondition()
-                                ? BooleanExpression::and
-                                : BooleanExpression::or);
+                             .map(criteria -> withExpression(criteria, memberAlias, boardAlias))
+                             .filter(Objects::nonNull)
+                             .reduce(searchCriteria.isAndCondition()
+                                             ? asBoolean(true).isTrue()
+                                             : asBoolean(false).isTrue(),
+                                     searchCriteria.isAndCondition()
+                                             ? BooleanExpression::and
+                                             : BooleanExpression::or);
     }
 
-    private static BooleanExpression withExpression(SearchOption searchCriteria, String memberAlias, String boardAlias) {
+    private static BooleanExpression withExpression(SearchOption searchCriteria, String memberAlias,
+                                                    String boardAlias) {
         PathBuilder<?> entityPath;
         if (PROPERTY_OWNER_MAP.getOrDefault(searchCriteria.getKey(), Member.class) == Member.class) {
             entityPath = new PathBuilder<>(Member.class, boardAlias);
@@ -67,28 +69,31 @@ public final class BoardPredicatesBuilder {
         final Class propertyType = PROPERTY_TYPE_MAP.getOrDefault(searchCriteria.getKey(), String.class);
         if (propertyType == Long.class) {
             return getBooleanExpression(entityPath.getNumber(searchCriteria.getKey(), Long.class),
-                    searchCriteria.getOperation(),
-                    Long.valueOf(searchCriteria.getValue()));
+                                        searchCriteria.getOperation(),
+                                        Long.valueOf(searchCriteria.getValue()));
         } else if (propertyType == Double.class) {
             return getBooleanExpression(entityPath.getNumber(searchCriteria.getKey(), Double.class),
-                    searchCriteria.getOperation(),
-                    Double.valueOf(searchCriteria.getValue()));
+                                        searchCriteria.getOperation(),
+                                        Double.valueOf(searchCriteria.getValue()));
         } else if (propertyType == Integer.class) {
             return getBooleanExpression(entityPath.getNumber(searchCriteria.getKey(), Integer.class),
-                    searchCriteria.getOperation(),
-                    Integer.valueOf(searchCriteria.getValue()));
+                                        searchCriteria.getOperation(),
+                                        Integer.valueOf(searchCriteria.getValue()));
         } else if (propertyType == LocalDate.class) {
             return getBooleanExpression(entityPath.getDate(searchCriteria.getKey(), LocalDate.class),
-                    searchCriteria.getOperation(),
-                    LocalDate.parse(searchCriteria.getValue()));
+                                        searchCriteria.getOperation(),
+                                        LocalDate.parse(searchCriteria.getValue()));
         } else if (propertyType == LocalDateTime.class) {
             return getBooleanExpression(entityPath.getDateTime(searchCriteria.getKey(), LocalDateTime.class),
-                    searchCriteria.getOperation(),
-                    searchCriteria.getValue());
+                                        searchCriteria.getOperation(),
+                                        searchCriteria.getValue());
         } else if (propertyType == String.class) {
             return getBooleanExpression(entityPath.getString(searchCriteria.getKey()),
-                    searchCriteria.getOperation(),
-                    searchCriteria.getValue());
+                                        searchCriteria.getOperation(),
+                                        searchCriteria.getValue());
+        } else if (propertyType == Boolean.class) {
+            return getBooleanExpression(entityPath.getBoolean(searchCriteria.getKey()),
+                                        Boolean.valueOf(searchCriteria.getValue()));
         }
 
         return null;
@@ -96,11 +101,12 @@ public final class BoardPredicatesBuilder {
 
     public static OrderSpecifier[] buildOrder(Pageable pageable, String memberAlias, String boardAlias) {
         return pageable.getSort().stream()
-                .map(order -> withOrder(memberAlias, boardAlias, order))
-                .toArray(OrderSpecifier[]::new);
+                       .map(order -> withOrder(memberAlias, boardAlias, order))
+                       .toArray(OrderSpecifier[]::new);
     }
 
-    private static OrderSpecifier<? extends Serializable> withOrder(String memberAlias, String boardAlias, Sort.Order order) {
+    private static OrderSpecifier<? extends Serializable> withOrder(String memberAlias, String boardAlias,
+                                                                    Sort.Order order) {
         PathBuilder<?> entityPath;
         String property = order.getProperty();
         if (property.equalsIgnoreCase("updatedBy")) {
@@ -118,22 +124,22 @@ public final class BoardPredicatesBuilder {
         final Class propertyType = PROPERTY_TYPE_MAP.getOrDefault(property, String.class);
         if (propertyType == Long.class) {
             return new OrderSpecifier<>(Order.valueOf(order.getDirection().name()),
-                    entityPath.getNumber(property, Long.class));
+                                        entityPath.getNumber(property, Long.class));
         } else if (propertyType == Double.class) {
             return new OrderSpecifier<>(Order.valueOf(order.getDirection().name()),
-                    entityPath.getNumber(property, Double.class));
+                                        entityPath.getNumber(property, Double.class));
         } else if (propertyType == Integer.class) {
             return new OrderSpecifier<>(Order.valueOf(order.getDirection().name()),
-                    entityPath.getNumber(property, Integer.class));
+                                        entityPath.getNumber(property, Integer.class));
         } else if (propertyType == LocalDate.class) {
             return new OrderSpecifier<>(Order.valueOf(order.getDirection().name()),
-                    entityPath.getDate(property, LocalDate.class));
+                                        entityPath.getDate(property, LocalDate.class));
         } else if (propertyType == LocalDateTime.class) {
             return new OrderSpecifier<>(Order.valueOf(order.getDirection().name()),
-                    entityPath.getDateTime(property, LocalDateTime.class));
+                                        entityPath.getDateTime(property, LocalDateTime.class));
         } else if (propertyType == String.class) {
             return new OrderSpecifier<>(Order.valueOf(order.getDirection().name()),
-                    entityPath.getString(property));
+                                        entityPath.getString(property));
         }
         return null;
     }

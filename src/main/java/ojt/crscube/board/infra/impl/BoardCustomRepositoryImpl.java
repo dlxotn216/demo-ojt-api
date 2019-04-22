@@ -6,6 +6,7 @@ import ojt.crscube.board.domain.model.Board;
 import ojt.crscube.board.domain.model.QBoard;
 import ojt.crscube.board.infra.BoardCustomRepository;
 import ojt.crscube.member.domain.model.QMember;
+import ojt.crscube.member.domain.model.QMemberPassword;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -30,10 +31,11 @@ public class BoardCustomRepositoryImpl extends QuerydslRepositorySupport impleme
         //BoardPredicateBuilder에서 지정한 PathBuilder에 variable과 동일하게 줄 것
         QMember qMember = new QMember(memberAlias);
         QBoard qBoard = new QBoard(boardAlias);
+        QMemberPassword memberPassword = new QMemberPassword("qp");
 
         JPQLQuery<Board> query
-                = from(qBoard).innerJoin(qBoard.writer, qMember)
-                .where(buildPredicate(searchCriteria, memberAlias, boardAlias)).fetchJoin();
+                = from(qBoard).innerJoin(qBoard.writer, qMember).fetchJoin()
+                              .where(buildPredicate(searchCriteria, memberAlias, boardAlias));
 
         query.offset(pageable.getOffset());
         query.limit(pageable.getPageSize());

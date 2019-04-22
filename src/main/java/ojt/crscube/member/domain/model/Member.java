@@ -11,7 +11,11 @@ import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
+import static ojt.crscube.base.utils.Messages.LOGIN_INVALID_MEMBER;
 import static ojt.crscube.base.utils.Messages.PASSWORD_NOT_MATCHED;
 import static ojt.crscube.member.domain.model.MemberPassword.createNewPassword;
 
@@ -28,7 +32,7 @@ import static ojt.crscube.member.domain.model.MemberPassword.createNewPassword;
 @Entity @Table(name = "MST_MEMBER")
 @SequenceGenerator(name = "SEQ_MEMBER", sequenceName = "SEQ_MEMBER")
 @Audited(withModifiedFlag = true) @EntityListeners(value = {AuditingEntityListener.class})
-public class Member implements TokenSource{
+public class Member implements TokenSource {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "SEQ_MEMBER")
     @Column(name = "MEMBER_KEY", unique = true, nullable = false, updatable = false)
@@ -40,23 +44,39 @@ public class Member implements TokenSource{
     @Column(name = "MEMBER_NAME", nullable = false)
     private String name;
 
-    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private MemberPassword memberPassword;
+    @Builder.Default
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<MemberPassword> memberPassword = new ArrayList<>();
 
     @Builder.Default
     @Embedded
     private EntityBase entityBase = new EntityBase();
 
+    public Optional<MemberPassword> getMemberPassword() {
+        return this.memberPassword.stream().findAny();
+    }
+
     public void updatePassword(String originPassword, String newPassword) {
-        if (!this.memberPassword.isMatchedPassword(originPassword)) {
+        if (!this.isMatchedPassword(originPassword)) {
             throw new IllegalArgumentException(PASSWORD_NOT_MATCHED);
         }
 
         this.setMemberPassword(newPassword);
     }
 
+    public boolean isMatchedPassword(String originPassword) {
+        return this.getMemberPassword()
+                   .orElseThrow(() -> new IllegalStateException(LOGIN_INVALID_MEMBER))
+                   .isMatchedPassword(originPassword);
+    }
+
     public void setMemberPassword(String memberPassword) {
-        this.memberPassword = createNewPassword(this, memberPassword);
+        if (this.getMemberPassword().isPresent()) {
+            this.getMemberPassword().orElseThrow(() -> new IllegalStateException(LOGIN_INVALID_MEMBER))
+                .updatePassword(memberPassword);
+        } else {
+            this.memberPassword.add(createNewPassword(this, memberPassword));
+        }
     }
 
     public static Member createNewMember(String id, String name, String password) {
