@@ -23,7 +23,7 @@ public class BoardCreateController {
     private final BoardCreateService boardCreateService;
 
     @PostMapping("/boards")
-    public ResponseEntity<ApiResponse> createBoard(@RequestBody BoardCreateRequest request) {
+    public ResponseEntity<ApiResponse> create(@RequestBody BoardCreateRequest request) {
         return status(HttpStatus.CREATED).body(success(this.boardCreateService.createBoard(request)));
     }
 }

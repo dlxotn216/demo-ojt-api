@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,10 +23,15 @@ public class BoardSearchController {
     private final BoardSearchService boardSearchService;
 
     @GetMapping("/boards")
-    public ResponseEntity<ApiResponse> searchBoards(
+    public ResponseEntity<ApiResponse> search(
             @PageableDefault(sort = {"updateDateTime"}, direction = Sort.Direction.DESC, value = 5) Pageable pageable,
             @RequestParam(name = "criteria", required = false, defaultValue = "") String searchOptionString,
             @RequestParam(name = "condition", required = false, defaultValue = "and") String condition) {
         return ok(success(this.boardSearchService.searchBoards(searchOptionString, condition, pageable)));
+    }
+
+    @GetMapping("/boards/{key}")
+    public ResponseEntity<ApiResponse> search(@PathVariable("key") Long key) {
+        return ok(success(this.boardSearchService.searchOrThrow(key)));
     }
 }
