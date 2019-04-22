@@ -72,12 +72,12 @@ public class MemberPassword {
         }
     }
 
-    public void updatePassword(String passwordSource) {
+    void setPassword(String passwordSource) {
         passwordValidation(passwordSource);
         this.encryptedPassword = encode(passwordSource);
     }
 
-    boolean isMatchedPassword(String password) {
-        return matches(password, this.encryptedPassword);
+    boolean isMatchedPassword(String passwordSource) {
+        return matches(passwordSource, this.encryptedPassword);
     }
 }

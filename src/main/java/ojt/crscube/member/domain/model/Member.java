@@ -56,12 +56,12 @@ public class Member implements TokenSource {
         return this.memberPassword.stream().findAny();
     }
 
-    public void updatePassword(String originPassword, String newPassword) {
+    public void changePassword(String originPassword, String newPassword, String reason) {
         if (!this.isMatchedPassword(originPassword)) {
             throw new IllegalArgumentException(PASSWORD_NOT_MATCHED);
         }
 
-        this.setMemberPassword(newPassword);
+        this.setMemberPassword(newPassword).getEntityBase().setReason(reason);
     }
 
     public boolean isMatchedPassword(String originPassword) {
@@ -70,13 +70,17 @@ public class Member implements TokenSource {
                    .isMatchedPassword(originPassword);
     }
 
-    public void setMemberPassword(String memberPassword) {
+    public MemberPassword setMemberPassword(String passwordSource) {
         if (this.getMemberPassword().isPresent()) {
-            this.getMemberPassword().orElseThrow(() -> new IllegalStateException(LOGIN_INVALID_MEMBER))
-                .updatePassword(memberPassword);
-        } else {
-            this.memberPassword.add(createNewPassword(this, memberPassword));
+            MemberPassword originMemberPassword = this.getMemberPassword()
+                                                .orElseThrow(() -> new IllegalStateException(LOGIN_INVALID_MEMBER));
+            originMemberPassword.setPassword(passwordSource);
+            return originMemberPassword;
         }
+
+        MemberPassword newPassword = createNewPassword(this, passwordSource);
+        this.memberPassword.add(newPassword);
+        return newPassword;
     }
 
     public static Member createNewMember(String id, String name, String password) {

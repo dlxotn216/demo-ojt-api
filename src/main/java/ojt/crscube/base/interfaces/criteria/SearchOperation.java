@@ -1,6 +1,5 @@
 package ojt.crscube.base.interfaces.criteria;
 
-import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,9 +27,9 @@ public enum SearchOperation {
 
     public static SearchOperation fromString(String operationString) {
         return Stream.of(values())
-                .filter(searchOperation -> searchOperation.operationString.equalsIgnoreCase(operationString))
-                .findAny()
-                .orElseThrow(() -> new UnsupportedOperationException(operationString + "은 지원하지 않는 연산자입니다"));
+                     .filter(searchOperation -> searchOperation.operationString.equalsIgnoreCase(operationString))
+                     .findAny()
+                     .orElseThrow(() -> new UnsupportedOperationException(operationString + "은 지원하지 않는 연산자입니다"));
     }
 
     public static <A extends Number & Comparable<?>> BooleanExpression getBooleanExpression(NumberPath<A> path,
@@ -82,15 +81,15 @@ public enum SearchOperation {
         LocalDateTime localDateTime;
         try {
             localDateTime = LocalDateTime.parse(value);
-        } catch (Exception e){
-            localDateTime = LocalDate.parse(value).atTime(0,0);
+        } catch (Exception e) {
+            localDateTime = LocalDate.parse(value).atTime(0, 0);
         }
         return getBooleanExpressionResult(path, operation, localDateTime);
     }
 
     private static <T extends Comparable> BooleanExpression getBooleanExpressionResult(ComparableExpression<T> path,
-                                                              SearchOperation operation,
-                                                              T value){
+                                                                                       SearchOperation operation,
+                                                                                       T value) {
         switch (operation) {
             case EQUAL:
                 return path.eq(value);

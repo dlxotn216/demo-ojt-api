@@ -22,7 +22,7 @@ labels:
     - i18nId: PASSWORD_NOT_MATCHED
       values:
         - locale: ko
-          value: 비밀번호가일치하지 않습니다.
+          value: 비밀번호가 일치하지 않습니다.
         - locale: en
           value: Password do not matched.
     - i18nId: LOGIN_INVALID_MEMBER
