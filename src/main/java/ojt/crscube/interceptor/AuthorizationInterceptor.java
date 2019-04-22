@@ -42,7 +42,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         map.put("/locales", Collections.singletonList("GET"));
         map.put("/i18ns/entry", Collections.singletonList("GET"));
         map.put("/members/login", Collections.singletonList("POST"));
-        map.put("/members/signup", Collections.singletonList("GET"));
+        map.put("/members/signup", Collections.singletonList("POST"));
 
         skipURIs = Collections.unmodifiableMap(map);
     }
@@ -54,16 +54,19 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+            throws Exception {
         String requestUri = request.getRequestURI();
         String method = request.getMethod();
 
-        if (isSkipURI(requestUri, method))
+        if (isSkipURI(requestUri, method)) {
             return true;
+        }
 
         String accessToken = resolveToken(request);
-        if (StringUtils.isEmpty(accessToken))
+        if (StringUtils.isEmpty(accessToken)) {
             throw new IllegalStateException(ACCESS_TOKEN_INVALID);
+        }
 
         setAuthentication(tokenService.parseTokenValue(accessToken));
         return true;
@@ -90,7 +93,8 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+                                @Nullable Exception ex) throws Exception {
         remove();
     }
 }

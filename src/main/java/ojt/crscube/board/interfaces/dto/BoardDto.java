@@ -44,12 +44,15 @@ public final class BoardDto {
         private String subject;
         private LocalDate updatedDate;
         private String updatedBy;
+        private boolean deleted;
 
-        public BoardsSearchResponse(Long key, String subject, LocalDate updatedDate, String updatedBy) {
+        public BoardsSearchResponse(Long key, String subject, LocalDate updatedDate, String updatedBy,
+                                    boolean deleted) {
             this.key = key;
             this.subject = subject;
             this.updatedDate = updatedDate;
             this.updatedBy = updatedBy;
+            this.deleted = deleted;
         }
 
         public static BoardsSearchResponse from(Board board) {
@@ -57,7 +60,8 @@ public final class BoardDto {
                     board.getKey(),
                     board.getSubject(),
                     board.getUpdatedDateTime().toLocalDate(),
-                    board.getWriter().getId());
+                    board.getWriter().getId(),
+                    board.getEntityBase().getDeleted());
         }
     }
 
