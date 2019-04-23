@@ -1,8 +1,4 @@
----
-spring:
-  profiles:
-    active: local, init
-    
+---    
 labels:
   i18ns:
     - i18nId: REQUIRED_PARAMETER

@@ -27,3 +27,29 @@ parameter group에서 character set을 utf8 변경 후 아래 쿼리로 확인
   -> Change the MySQL database collation to UTF-8
 * ALTER DATABASE demo DEFAULT CHARACTER SET utf8;   
   -> Change the MySQL database character set to UTF-8 
+  
+  
+
+## Install Spring boot application as service
+https://docs.spring.io/spring-boot/docs/current/reference/html/deployment-install.html  
+pom.xml 설정
+```xml
+<plugin>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-maven-plugin</artifactId>
+    <configuration>
+        <executable>true</executable>
+    </configuration>
+</plugin>
+```
+
+* 
+* 특정 디렉토리에 설치 
+* sudo ln -s /var/myapp/myapp.jar /etc/init.d/myapp 명령어 실행  
+  * cat /etc/init.d/myapp 명령어로 확인
+* service myapp start
+* default variable을 변경하고 싶다면 myapp.jar와 동일 위치에 myapp.conf 생성
+```properties
+JAVA_OPTS=-Xmx1024M
+LOG_FOLDER=/custom/log/folder
+```
