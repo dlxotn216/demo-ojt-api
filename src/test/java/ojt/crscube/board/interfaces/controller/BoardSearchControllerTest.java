@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -30,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
+@Transactional
 public class BoardSearchControllerTest {
 
     @Autowired
@@ -39,7 +41,6 @@ public class BoardSearchControllerTest {
     private BoardRepository boardRepository;
 
     @Test
-    @Transactional
     public void Board_리스트_조회_테스트() throws Exception {
         //given
         this.boardRepository.saveAll(Arrays.asList(
@@ -66,7 +67,6 @@ public class BoardSearchControllerTest {
     }
 
     @Test
-    @Transactional
     public void Board_리스트_Filter_조회_테스트() throws Exception {
         //given
         this.boardRepository.saveAll(Arrays.asList(
@@ -112,7 +112,7 @@ public class BoardSearchControllerTest {
     @Test
     public void Board_단건_조회_테스트() throws Exception {
         //given
-        this.boardRepository.saveAll(Arrays.asList(
+        List<Board> boards = this.boardRepository.saveAll(Arrays.asList(
                 Board.builder().subject("test01").content("test01 content").build(),
                 Board.builder().subject("test02").content("test02 content").build(),
                 Board.builder().subject("test03").content("test03 content").build(),
@@ -121,15 +121,16 @@ public class BoardSearchControllerTest {
                 Board.builder().subject("test06").content("test06 content").build()
         ));
 
-        MockHttpServletRequestBuilder requestBuilder = get("/boards/1")
+        final Long targetKey = boards.get(0).getKey();
+        MockHttpServletRequestBuilder requestBuilder = get("/boards/"+targetKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
 
         //when
         ResultActions perform = this.mockMvc.perform(requestBuilder);
-
+        
         //then
-        Board board = this.boardRepository.findById(1L).orElseThrow(EntityNotFoundException::new);
+        Board board = this.boardRepository.findById(targetKey).orElseThrow(EntityNotFoundException::new);
 
         perform.andDo(print())
                .andExpect(status().isOk())

@@ -20,7 +20,7 @@ import static java.util.stream.Collectors.toMap;
 /**
  * Created by taesu on 2019-04-20.
  */
-@Component @RequiredArgsConstructor @Getter @Setter @Profile({"init"})
+@Component @RequiredArgsConstructor @Getter @Setter @Profile({"init", "test"})
 public class ApplicationInitializer implements ApplicationRunner {
     private final I18nCreateService i18nCreateService;
     private final I18nConfigurationProperties i18NConfigurationProperties;
