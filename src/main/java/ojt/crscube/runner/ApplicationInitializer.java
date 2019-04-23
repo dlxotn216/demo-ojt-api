@@ -11,6 +11,7 @@ import ojt.crscube.member.domain.model.Member;
 import ojt.crscube.member.domain.repository.MemberRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +20,7 @@ import static java.util.stream.Collectors.toMap;
 /**
  * Created by taesu on 2019-04-20.
  */
-@Component @RequiredArgsConstructor @Getter @Setter
+@Component @RequiredArgsConstructor @Getter @Setter @Profile({"init"})
 public class ApplicationInitializer implements ApplicationRunner {
     private final I18nCreateService i18nCreateService;
     private final I18nConfigurationProperties i18NConfigurationProperties;
@@ -32,10 +33,17 @@ public class ApplicationInitializer implements ApplicationRunner {
         admin.setMemberPassword("admin123!@#");
         this.memberRepository.save(admin);
 
-        this.i18NConfigurationProperties.getI18ns()
+        this.i18NConfigurationProperties
+                .getI18ns()
                 .stream()
-                .map(i18nConfig -> new I18nCreateRequest(i18nConfig.getI18nId(),
-                        i18nConfig.getValues().stream().collect(toMap(I18nLabelConfig::getLocale, I18nLabelConfig::getValue))))
+                .map(this::getI18nCreateRequest)
                 .forEach(this.i18nCreateService::createI18n);
+    }
+
+    private I18nCreateRequest getI18nCreateRequest(I18nConfigurationProperties.I18nConfig i18nConfig) {
+        return new I18nCreateRequest(i18nConfig.getI18nId(),
+                                     i18nConfig.getValues()
+                                               .stream()
+                                               .collect(toMap(I18nLabelConfig::getLocale, I18nLabelConfig::getValue)));
     }
 }
