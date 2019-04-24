@@ -42,14 +42,4 @@ public class WebApplicationConfiguration implements WebMvcConfigurer {
                 of(values()).map(ApplicationLocale::getLocale).collect(toList()));
         return acceptHeaderLocaleResolver;
     }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name(),
-                                HttpMethod.PUT.name(), HttpMethod.DELETE.name(), HttpMethod.OPTIONS.name())
-                .allowCredentials(false)
-                .maxAge(3600);
-    }
 }
