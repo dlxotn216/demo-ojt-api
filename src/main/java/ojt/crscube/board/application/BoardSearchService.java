@@ -34,9 +34,9 @@ public class BoardSearchService {
                 = this.boardRepository.findAllWithMember(new SearchCriteria(searchOptionString, condition), pageable)
                                       .map(BoardsSearchResponse::from);
 
-        Long totalCount = responsePage.getTotalElements();
+        Long startNo = responsePage.getTotalElements() - (pageable.getPageNumber() * pageable.getPageSize());
         for (BoardsSearchResponse response : responsePage) {
-            response.setNo(totalCount--);
+            response.setNo(startNo--);
         }
 
         return responsePage;
