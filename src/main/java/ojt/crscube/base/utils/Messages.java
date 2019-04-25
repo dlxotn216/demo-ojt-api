@@ -4,7 +4,8 @@ package ojt.crscube.base.utils;
  * Created by taesu on 2019-04-19_
  */
 public final class Messages {
-    private Messages(){}
+    private Messages() {
+    }
 
     public static final String REQUIRED_PARAMETER = "REQUIRED_PARAMETER";
     public static final String ENTITY_NOT_FOUND = "ENTITY_NOT_FOUND";

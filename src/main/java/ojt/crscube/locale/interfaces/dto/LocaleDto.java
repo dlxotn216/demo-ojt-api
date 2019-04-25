@@ -15,6 +15,8 @@ import java.util.Locale;
  * @since 1.0
  */
 public final class LocaleDto {
+    private LocaleDto() {
+    }
 
     public static LocaleSearchResponse toResponse(ApplicationLocale applicationLocale) {
         return new LocaleSearchResponse(applicationLocale.getLocale(), applicationLocale.getName());

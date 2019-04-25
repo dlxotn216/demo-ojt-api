@@ -1,0 +1,24 @@
+package ojt.crscube.base.utils;
+
+import org.junit.Test;
+
+import java.lang.reflect.Constructor;
+
+/**
+ * Created by Lee Tae Su on 2019-04-25.
+ */
+public class VariableUtilsTest {
+    @Test
+    public void 생성자_테스트() throws Exception {
+        for (Constructor<?> constructor : VariableUtils.class.getDeclaredConstructors()) {
+            constructor.setAccessible(true);
+            constructor.newInstance();
+        }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void requireNonNullTest() throws Exception {
+        VariableUtils.requireNonNull(null, "stseat");
+    }
+
+}

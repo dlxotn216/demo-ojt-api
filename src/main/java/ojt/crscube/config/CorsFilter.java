@@ -45,9 +45,4 @@ public class CorsFilter implements Filter {
             chain.doFilter(request, response);
         }
     }
-
-    public void init(FilterConfig filterConfig) {}
-
-    public void destroy() {}
-
 }
