@@ -8,6 +8,6 @@ import org.junit.Test;
 public class DemoApiApplicationTest {
     @Test
     public void test() {
-        DemoApiApplication.main(null);
+        DemoApiApplication.main(new String[]{});
     }
 }

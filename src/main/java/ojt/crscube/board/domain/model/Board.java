@@ -70,4 +70,9 @@ public class Board {
         return this;
     }
 
+    public Board restore(String reason) {
+        this.entityBase.setDeleted(false);
+        this.entityBase.setReason(reason);
+        return this;
+    }
 }
