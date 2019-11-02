@@ -18,7 +18,7 @@
         <java.version>1.8</java.version>
         <com.jayway.jsonpath.json-path.version>2.4.0</com.jayway.jsonpath.json-path.version>
         <com.auth.java.jwt.version>2.1.0</com.auth.java.jwt.version>
-        <com.nimbusds.nimbus.jose.jwt.version>4.23</com.nimbusds.nimbus.jose.jwt.version>
+        <com.nimbusds.nimbus.jose.jwt.version>7.9</com.nimbusds.nimbus.jose.jwt.version>
     </properties>
 
     <dependencies>
